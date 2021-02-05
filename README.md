@@ -1,3 +1,31 @@
+
+# Unreal Engine Instruction:
+
+In order to compile with Unreal Engine you will need to use Unreal SSL lib files instead, else you will get compiler errors.
+
+Currently version 2.14.1 seems to be the one working for Unreal integration, more recent versions needs to be tested.
+
+For Linux, use the compiled lib and compiled dependencies, for windows follow these steps below:
+
+- Follow the default guide for compiling on windows (download requires softwares, include necessary PATH entries, etc)
+- Configure cmake, select to build a static lib and use static dependencies (tip: search for static)
+- Run cmake as normally, it should create a "libs" folder inside your build directory, (for me it attempted to create the "openssl" folder but it failed, this is fine since we will use Unreal's version of it)
+- Get the UPDATED Unreal Engine OpenSSL libs from "Engine\Source\ThirdParty\OpenSSL\1.1.1\Lib\Win64\VS2015\Release" (or whatever is your engine path), we are looking for "libcrypto.lib" and "libssl.lib"
+- In the created "libs" folder (inside your build dir for cassandra), create an "openssl" folder if not existent and paste the compiled lib files (look at the compiled dependencies below in the official doc area)
+- Make sure you have "libs\openssl\include\openssl\include" with all headers and "libs\openssl\lib" with the libs
+- Paste the Unreal libs into "libs\openssl\lib"
+- Modify the Cassandra cmake LIB_EAY_RELEASE to point to "libcrypto.lib" and SSL_EAY_RELEASE to "libssl.lib"
+- Re-generate the cmake
+- Compile as normally (ideally Release version)
+- You should get some OpenSSL script errors before generating the Cassandra lib, open those scripts and change their content to:
+
+@ECHO OFF
+EXIT /B
+
+- Compile again, it should succeed
+
+--------------------------------------------------
+
 # DataStax C/C++ Driver for Apache Cassandra
 
 A modern, feature-rich] and highly tunable C/C++ client library for
