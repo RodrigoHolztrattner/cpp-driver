@@ -15,6 +15,7 @@ For Linux, use the compiled lib and compiled dependencies, for windows follow th
 - Make sure you have "libs\openssl\include\openssl\include" with all headers and "libs\openssl\lib" with the libs
 - Paste the Unreal libs into "libs\openssl\lib"
 - Modify the Cassandra cmake LIB_EAY_RELEASE to point to "libcrypto.lib" and SSL_EAY_RELEASE to "libssl.lib"
+- (I noticed that you might need to use the files inside the "include" folder from Unreal for the openssl lib)
 - Re-generate the cmake
 - Compile as normally (ideally Release version)
 - You should get some OpenSSL script errors before generating the Cassandra lib, open those scripts and change their content to:
