@@ -1,5 +1,4 @@
-
-# Unreal Engine Instruction:
+# Unreal Engine Windows Instruction:
 
 In order to compile with Unreal Engine you will need to use Unreal SSL lib files instead, else you will get compiler errors.
 
@@ -25,6 +24,47 @@ EXIT /B
 
 - Compile again, it should succeed
 
+# Unreal Engine Linux/Ubuntu Instruction:
+(currently Ubuntu 16.04 in order to support SpatialOS Worker system)
+
+Currently version 2.14.1 seems to be the one working for Unreal integration, more recent versions needs to be tested.
+
+- Setup a virtualmachine with Ubuntu 16.04. Vagrantfile below for example:
+
+```shell
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/xenial64"
+  config.vm.network "public_network" , ip: "192.168.1.169"
+end
+```
+
+- Install OpenSSL 1.1.1j for ubuntu 16.04, following this guide: https://cloudwafer.com/blog/installing-openssl-on-ubuntu-16-04-18-04/
+- Follow build steps provided here (will provide more details below): https://docs.datastax.com/en/developer/cpp-driver/2.14/topics/building/)
+- Install build tools on Ubuntu: 
+sudo apt-get install build-essential cmake git autogen libtool
+- Install libuv 1.35.0:
+
+```shell
+wget http://dist.libuv.org/dist/v1.35.0/libuv-v1.35.0.tar.gz
+tar xzf libuv-v1.35.0.tar.gz
+cd libuv-v1.35.0
+./autogen.sh
+./configure
+make install
+```
+
+- Skip OpenSSL installation section from Cassandra build instructions since we already installed libssl 1.1.1 in #1
+- Clone Cassandra C++ driver from this repo: https://github.com/datastax/cpp-driver. Checkout to branch 2.14.1
+- To compile driver, use instructions below:
+- From cloned cassandra sources:
+
+```shell
+mkdir build
+cd build
+cmake ..
+make
+make install
+```
 --------------------------------------------------
 
 # DataStax C/C++ Driver for Apache Cassandra
